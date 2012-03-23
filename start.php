@@ -77,10 +77,15 @@ function googleplus_api_activity($hook, $entity_type, $returnvalue, $params) {
 	elgg_load_library('apiClient');
 	elgg_load_library('apiPlusService');
 	
-
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+        
 	// check admin settings
-	$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
-	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
+        if($params['UseOauth'])
+        {
+            $client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
+            $client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
+        }
+        
         $developer_key = elgg_get_plugin_setting('developer_key', 'googleplus_api');
         
 	if (!($client_id && $client_secret && $developer_key)) {
@@ -102,6 +107,7 @@ function googleplus_api_activity($hook, $entity_type, $returnvalue, $params) {
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
         $client->setDeveloperKey($developer_key);
+        $client->setRedirectUri($redirectUri);
         $client->setAccessToken($access_token);
         
         $plus = new apiPlusService($client);
@@ -129,7 +135,8 @@ function googleplus_api_comments($hook, $entity_type, $returnvalue, $params) {
 	elgg_load_library('apiClient');
 	elgg_load_library('apiPlusService');
 	
-
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+        
 	// check admin settings
 	$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
 	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
@@ -159,6 +166,7 @@ function googleplus_api_comments($hook, $entity_type, $returnvalue, $params) {
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
         $client->setDeveloperKey($developer_key);
+        $client->setRedirectUri($redirectUri);        
         $client->setAccessToken($access_token);
         
         $plus = new apiPlusService($client);
@@ -187,6 +195,8 @@ function googleplus_api_urlshortner($hook, $entity_type, $returnvalue, $params) 
     	elgg_load_library('apiClient');
 	elgg_load_library('apiUrlshortenerService');
 
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';  
+        
 	// check admin settings
 	$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
 	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
@@ -230,7 +240,7 @@ function googleplus_api_urlshortner($hook, $entity_type, $returnvalue, $params) 
         {
             $client->setDeveloperKey($developer_key);            
         }
-        
+        $client->setRedirectUri($redirectUri);
         $service = new apiUrlshortenerService($client);
         
         $url = new Url();
@@ -254,6 +264,8 @@ function googleplus_api_event($hook, $entity_type, $returnvalue, $params) {
     	elgg_load_library('apiClient');
 	elgg_load_library('apiCalendarService');
 
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+        
 	// check admin settings
 	$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
 	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
@@ -279,6 +291,7 @@ function googleplus_api_event($hook, $entity_type, $returnvalue, $params) {
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
         $client->setDeveloperKey($developer_key);
+        $client->setRedirectUri($redirectUri);
         $client->setAccessToken($access_token);
         
         
@@ -352,6 +365,8 @@ function googleplus_api_task($hook, $entity_type, $returnvalue, $params) {
     	elgg_load_library('apiClient');
 	elgg_load_library('apiTasksService');
 
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+                
 	// check admin settings
 	$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
 	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
@@ -376,6 +391,7 @@ function googleplus_api_task($hook, $entity_type, $returnvalue, $params) {
         
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
+        $client->setRedirectUri($redirectUri);
         $client->setAccessToken($access_token);
         
         

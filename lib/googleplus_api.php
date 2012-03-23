@@ -48,7 +48,7 @@ function googleplus_api_login($token) {
 		forward();
 	}
 
-	if(!$token->access_token) {         
+	if(!$token) {         
 		register_error(elgg_echo('googleplus_api:login:error'));
 		forward();
 	}
@@ -62,6 +62,8 @@ function googleplus_api_login($token) {
 	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
         $developer_key = elgg_get_plugin_setting('developer_key', 'googleplus_api');
         
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+        
 	if (!($client_id && $client_secret && $developer_key)) {
 		return NULL;
 	}
@@ -73,8 +75,9 @@ function googleplus_api_login($token) {
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
         $client->setDeveloperKey($developer_key);
+        $client->setRedirectUri($redirectUri);
         $client->setAccessToken($token);
-        
+       
         $plus = new apiPlusService($client);
         $oauth2 = new apiOauth2Service($client);
         
@@ -137,6 +140,7 @@ function googleplus_api_login($token) {
                         
                         $google_user = $oauth2->userinfo->get();
 
+			
                         // These fields are currently filtered through the PHP sanitize filters.
                         // See http://www.php.net/manual/en/filter.filters.sanitize.php
                         $google_email = filter_var($google_user['email'], FILTER_SANITIZE_EMAIL);
@@ -145,9 +149,10 @@ function googleplus_api_login($token) {
                         {
                             $user->email = $google_email;
                         }
-                        if($google_user['profile'])
+                        
+                        if($me['aboutMe'])
                         {
-                            $user->description = $google_user['profile'];
+                            $user->description = $me['aboutMe'];
                         }
                         if($google_email)
                         {
@@ -179,7 +184,7 @@ function googleplus_api_login($token) {
 
 		// pull in googleplus icon
                 
-                $profile_image = filter_var($me['image']['url'], FILTER_VALIDATE_URL);
+                $profile_image = filter_var($google_user['picture'], FILTER_VALIDATE_URL);;
 		googleplus_api_update_user_avatar($user, $profile_image);
 
 		// login new user
@@ -256,7 +261,7 @@ function googleplus_api_authorize() {
         if(!isloggedin()){
 		googleplus_api_login($token);
         }
-	if(!$token->access_token) {         
+	if(!$token) {         
 		register_error(elgg_echo('googleplus_api:authorize:error'));
 		forward('settings/plugins', 'googleplus_api');
 	}
@@ -281,6 +286,7 @@ function googleplus_api_authorize() {
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
         $client->setDeveloperKey($developer_key);
+        $client->setRedirectUri($redirectUri);
         $client->setAccessToken($token);
         
         $plus = new apiPlusService($client);
@@ -351,6 +357,7 @@ function googleplus_api_get_authorize_url() {
 	}
         
         $client = new apiClient();
+        $site = elgg_get_site_entity();
         $client->setApplicationName($site->name);
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
@@ -375,6 +382,8 @@ function googleplus_api_get_access_token($code) {
 
         elgg_load_library('apiClient');
         
+        $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+        
         $client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
 	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
         $developer_key = elgg_get_plugin_setting('developer_key', 'googleplus_api');
@@ -385,14 +394,15 @@ function googleplus_api_get_access_token($code) {
 	}
         
         $client = new apiClient();
+        $site = elgg_get_site_entity();
         $client->setApplicationName($site->name);
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
+        $client->setRedirectUri($redirectUri);
         $client->setDeveloperKey($developer_key);
-          
+              
         $client->authenticate();
         $token = $client->getAccessToken();
-
 	return $token;
 }
 
