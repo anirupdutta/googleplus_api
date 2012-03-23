@@ -4,8 +4,8 @@
  */
 
 $user_id = elgg_get_logged_in_user_guid();
-$googleplus_id = elgg_get_plugin_usersetting('access_key', $user_id, 'googleplus_api');
-$access_secret = elgg_get_plugin_usersetting('access_secret', $user_id, 'googleplus_api');
+$googleplus_id = elgg_get_plugin_user_setting('access_key', $user_id, 'googleplus_api');
+$access_secret = elgg_get_plugin_user_setting('access_secret', $user_id, 'googleplus_api');
 
 $site_name = elgg_get_site_entity()->name;
 echo '<div>' . elgg_echo('googleplus_api:usersettings:description', array($site_name)) . '</div>';
