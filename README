@@ -1,5 +1,7 @@
-Google+ integration for elgg.
+Google+ and google integration for elgg.
 
 Demo at http://sync.heybuddy.in/
 
 Remember this works only for elgg 1.8.
+
+Make sure the folder name is googleplus_api
