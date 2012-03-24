@@ -80,11 +80,9 @@ function googleplus_api_activity($hook, $entity_type, $returnvalue, $params) {
         $redirectUri = elgg_get_site_url().'googleplus_api/authorize';
         
 	// check admin settings
-        if($params['UseOauth'])
-        {
-            $client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
-            $client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
-        }
+
+        $client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
+        $client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
         
         $developer_key = elgg_get_plugin_setting('developer_key', 'googleplus_api');
         
@@ -198,8 +196,12 @@ function googleplus_api_urlshortner($hook, $entity_type, $returnvalue, $params) 
         $redirectUri = elgg_get_site_url().'googleplus_api/authorize';  
         
 	// check admin settings
-	$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
-	$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
+	
+	if($params['UseOauth'])
+        {
+		$client_id = elgg_get_plugin_setting('consumer_key', 'googleplus_api');
+		$client_secret = elgg_get_plugin_setting('consumer_secret', 'googleplus_api');
+        }
         $developer_key = elgg_get_plugin_setting('developer_key', 'googleplus_api');
         
 	if (!($client_id && $client_secret) && !($developer_key)) {
