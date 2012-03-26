@@ -92,7 +92,7 @@ function googleplus_api_login($token) {
                         'googleplus_url' => $me['url'],
 			'access_key' => $me['id'],
 		),
-		'plugin_user_setting_name_value_pairs_operator' => 'AND',
+		'plugin_user_setting_name_value_pairs_operator' => 'OR',
 		'limit' => 0
 	);
 	
@@ -300,6 +300,7 @@ function googleplus_api_authorize() {
                         'googleplus_url' => $me['url'],
 			'access_key' => $me['id'],
 		),
+		'plugin_user_setting_name_value_pairs_operator' => 'OR',
 		'limit' => 0
 	);
 
