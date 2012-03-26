@@ -364,7 +364,7 @@ function googleplus_api_get_authorize_url() {
         $client->setClientSecret($client_secret);
         $client->setRedirectUri($redirectUri);
         $client->setDeveloperKey($developer_key);
-        
+        $client->setApprovalPrompt('auto');
         $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/plus.me','https://www.googleapis.com/auth/tasks','https://www.googleapis.com/auth/calendar','https://www.googleapis.com/auth/urlshortener'));
 
 
