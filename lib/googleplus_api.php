@@ -279,6 +279,8 @@ function googleplus_api_authorize() {
 		return NULL;
 	}
 
+	$redirectUri = elgg_get_site_url().'googleplus_api/authorize';
+
         $client = new apiClient();
         $site = elgg_get_site_entity();
         $client->setApplicationName($site->name);
